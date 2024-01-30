@@ -34,10 +34,16 @@ else()
     message("FreeRTOS Heap management component not included.")
 endif()
 
-target_sources(${PROJECT_NAME} PRIVATE
-	${FREERTOS_SOURCE_FILES}
-)
 
-target_include_directories(${PROJECT_NAME} PUBLIC 
-    ${CMAKE_CURRENT_LIST_DIR}/Source/include
-)
+# Register core library
+add_library(freertos INTERFACE)
+target_sources(freertos PUBLIC ${FREERTOS_SOURCE_FILES})
+target_include_directories(freertos INTERFACE ${CMAKE_CURRENT_LIST_DIR}/Source/include)
+
+if (DEFINED FREERTOS_PORT)
+target_sources(freertos PUBLIC ${CMAKE_CURRENT_LIST_DIR}/Source/portable/GCC/${FREERTOS_PORT}/port.c)
+target_include_directories(freertos INTERFACE ${CMAKE_CURRENT_LIST_DIR}/Source/portable/GCC/${FREERTOS_PORT})
+message("FreeRTOS add ${FREERTOS_PORT} porting")
+else()
+message(FATAL_ERROR "It's not possibile don't add any portable! (FreeRTOS)")
+endif()
