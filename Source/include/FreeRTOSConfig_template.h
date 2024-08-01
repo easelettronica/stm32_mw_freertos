@@ -63,7 +63,8 @@ extern uint32_t SystemCoreClock;
 #define configUSE_PREEMPTION                1
 #define configUSE_IDLE_HOOK                 0
 #define configUSE_TICK_HOOK                 1
-#define configMAX_PRIORITIES                (7)
+#define configMAX_PRIORITIES                (32)
+#define configSUPPORT_STATIC_ALLOCATION     1
 #define configCPU_CLOCK_HZ                  (SystemCoreClock)
 #define configTICK_RATE_HZ                  ((TickType_t)1000)
 #define configMINIMAL_STACK_SIZE            ((uint16_t)128)
@@ -86,7 +87,7 @@ extern uint32_t SystemCoreClock;
 #define configMAX_CO_ROUTINE_PRIORITIES     (2)
 
 /* Software timer definitions. */
-#define configUSE_TIMERS                    1
+#define configUSE_TIMERS                    0
 #define configTIMER_TASK_PRIORITY           (2)
 #define configTIMER_QUEUE_LENGTH            10
 #define configTIMER_TASK_STACK_DEPTH        (configMINIMAL_STACK_SIZE * 2)
@@ -98,19 +99,19 @@ extern uint32_t SystemCoreClock;
 to exclude the API function. */
 #define INCLUDE_vTaskPrioritySet            1
 #define INCLUDE_uxTaskPriorityGet           1
-#define INCLUDE_vTaskDelete                 1
-#define INCLUDE_vTaskCleanUpResources       1
+#define INCLUDE_vTaskDelete                 0
+#define INCLUDE_vTaskCleanUpResources       0
 #define INCLUDE_vTaskSuspend                1
 #define INCLUDE_xTaskDelayUntil             0
 #define INCLUDE_vTaskDelay                  1
 #define INCLUDE_xTaskGetSchedulerState      1
 
 /* Optional functions - most linkers will remove unused functions anyway. */
-#define INCLUDE_xQueueGetMutexHolder        1
-#define INCLUDE_eTaskGetState               1
-#define INCLUDE_uxTaskGetStackHighWaterMark 1
-#define INCLUDE_xTimerPendFunctionCall      1
-#define INCLUDE_xTaskGetCurrentTaskHandle   1
+#define INCLUDE_xQueueGetMutexHolder        0
+#define INCLUDE_eTaskGetState               0
+#define INCLUDE_uxTaskGetStackHighWaterMark 0
+#define INCLUDE_xTimerPendFunctionCall      0
+#define INCLUDE_xTaskGetCurrentTaskHandle   0
 
 /*------------- CMSIS-RTOS V2 specific defines -----------*/
 /* When using CMSIS-RTOSv2 set configSUPPORT_STATIC_ALLOCATION to 1
@@ -162,11 +163,11 @@ See http://www.FreeRTOS.org/RTOS-Cortex-M3-M4.html. */
 /* Normal assert() semantics without relying on the provision of an assert.h
 header file. */
 #define configASSERT(x)                                                                                                \
-    if ((x) == 0) {                                                                                                    \
-        taskDISABLE_INTERRUPTS();                                                                                      \
-        for (;;)                                                                                                       \
-            ;                                                                                                          \
-    }
+  if ((x) == 0) {                                                                                                      \
+    taskDISABLE_INTERRUPTS();                                                                                          \
+    for (;;)                                                                                                           \
+      ;                                                                                                                \
+  }
 
 /* Definitions that map the FreeRTOS port interrupt handlers to their CMSIS
    standard names. */
